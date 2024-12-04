@@ -38,12 +38,12 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn clean verify sonar:sonar -Dsonar.organization=victorit -Dsonar.projectKey=victorit_my_training -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.exclusions=target/**,bin/**,**/*.class -Dsonar.report.export.path=./codeql-results.sarif
+          mvn clean verify sonar:sonar -Dsonar.organization=victorit -Dsonar.projectKey=victorit_my_training -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.exclusions=target/**,bin/**,**/*.class -Dsonar.report.export.path=/home/runner/work/frontend-maven-plugin/frontend-maven-plugin/codeql-results.sarif
           ls -al .
       - name: Upload SARIF results
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: ./codeql-results.sarif
+          sarif_file: /home/runner/work/frontend-maven-plugin/frontend-maven-plugin/codeql-results.sarif
       - name: Package
         run: mvn -B clean package -DskipTests
       - name: Publish JFrog Artifact
@@ -53,4 +53,4 @@ jobs:
           credentials type: 'username'
           user: ${{ secrets.ARTIFACTORY_USER }}
           password: ${{ secrets.ARTIFACTORY_PASSWORD }}
-          args: u "target/*.jar" "/exam-snapshot" --recursive=true
+          args: u "/home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/*.jar" "/exam-snapshot" --recursive=true
