@@ -64,5 +64,6 @@ jobs:
           credentials_type: 'username'
           user: ${{ secrets.ARTIFACTORY_USER }}
           password: ${{ secrets.ARTIFACTORY_PASSWORD }}
-          args: 'u frontend-maven-plugin/target/*.jar /exam-snapshot'
-
+      
+      - name: Upload artifact to Artifactory
+        run: jfrog rt u "frontend-maven-plugin/target/*" "exam-snapshot/"
