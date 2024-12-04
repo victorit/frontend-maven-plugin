@@ -67,7 +67,7 @@ jobs:
       - name: Upload artifacts to Artifactory
         run: |
           jfrog rt u "frontend-maven-plugin/target/*.jar" "exam-snapshot/" --url="https://trialkl8y5h.jfrog.io/artifactory" --user="$ARTIFACTORY_USER" --password="$ARTIFACTORY_PASSWORD" --threads=1
-          jfrog xray scan "exam-snapshot/* --url="https://trialkl8y5h.jfrog.io/artifactory" --user="$ARTIFACTORY_USER" --password="$ARTIFACTORY_PASSWORD"
+          jfrog xray scan "exam-snapshot/*" --url="https://trialkl8y5h.jfrog.io/artifactory" --user="$ARTIFACTORY_USER" --password="$ARTIFACTORY_PASSWORD"
         env:
           ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
           ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
