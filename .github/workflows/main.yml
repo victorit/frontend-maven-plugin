@@ -64,13 +64,14 @@ jobs:
           curl -fL https://getcli.jfrog.io | sh
           sudo mv jfrog /usr/local/bin/
           
-      - name: Publish JFrog Artifact
+      - name: Set up JFrog CLI
         uses: advancedcsg-open/action-jfrog-cli@master
         with:
           url: 'https://trialkl8y5h.jfrog.io/ui/packages'
           credentials_type: 'username'
           user: ${{ secrets.ARTIFACTORY_USER }}
           password: ${{ secrets.ARTIFACTORY_PASSWORD }}
-      
-      - name: Upload artifact to Artifactory
+
+      # Upload artifacts to Artifactory
+      - name: Upload artifacts to Artifactory
         run: jfrog rt u "frontend-maven-plugin/target/*" "exam-snapshot/"
