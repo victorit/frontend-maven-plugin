@@ -38,10 +38,9 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn clean verify sonar:sonar -Dsonar.organization=victorit -Dsonar.projectKey=victorit_my_training -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.exclusions=target/**,bin/**,**/*.class -Dsonar.report.export.path=target/sonarqube-report.sarif
-      - name: Upload SARIF Report
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: target/sonarqube-report.sarif
+          mvn clean verify sonar:sonar -Dsonar.organization=victorit -Dsonar.projectKey=victorit_my_training -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.exclusions=target/**,bin/**,**/*.class -Dsonar.report.export.path=sonarqube-report.sarif
+          uses: github/codeql-action/upload-sarif@v3
+          with:
+            sarif_file: sonarqube-report.sarif
       - name: Package
         run: mvn -B clean package -DskipTests
