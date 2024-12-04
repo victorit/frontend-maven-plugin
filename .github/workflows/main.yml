@@ -54,4 +54,4 @@ jobs:
           credentials type: 'username'
           user: ${{ secrets.ARTIFACTORY_USER }}
           password: ${{ secrets.ARTIFACTORY_PASSWORD }}
-          args: u "/home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/*.jar" "/exam-snapshot" --recursive=true
+          args: u "frontend-maven-plugin/target/*.jar" "/exam-snapshot" --recursive=true
