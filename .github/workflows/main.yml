@@ -38,20 +38,21 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn clean verify sonar:sonar -Dsonar.organization=victorit -Dsonar.projectKey=victorit_my_training -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.exclusions=target/**,bin/**,**/*.class -Dsonar.report.export.path=/home/runner/work/frontend-maven-plugin/frontend-maven-plugin/codeql-results.sarif
+          mvn clean verify sonar:sonar -Dsonar.organization=victorit -Dsonar.projectKey=victorit_my_training -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.exclusions=target/**,bin/**,**/*.class -Dsonar.report.export.path=/home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/sonar/codeql-results.sarif
           ls -al .
           ls -al /home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/
-      #- name: Upload SARIF results
-      #  uses: github/codeql-action/upload-sarif@v2
-      #  with:
-      #    sarif_file: /home/runner/work/frontend-maven-plugin/frontend-maven-plugin/codeql-results.sarif
+      - name: Upload SARIF results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: /home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/sonar/codeql-results.sarif
       - name: Package
         run: mvn -B clean package -DskipTests
       - name: Publish JFrog Artifact
         uses: advancedcsg-open/action-jfrog-cli@master
         with:
           url: 'https://trialkl8y5h.jfrog.io/ui/packages'
-          credentials type: 'username'
+          credentials_type: 'username'
           user: ${{ secrets.ARTIFACTORY_USER }}
           password: ${{ secrets.ARTIFACTORY_PASSWORD }}
-          args: u "frontend-maven-plugin/target/*.jar" "/exam-snapshot"
+          args: 'u frontend-maven-plugin/target/*.jar /exam-snapshot'
+
