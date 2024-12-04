@@ -57,6 +57,13 @@ jobs:
 
       - name: Package
         run: mvn -B clean package -DskipTests
+
+      # Set up JFrog CLI
+      - name: Install JFrog CLI
+        run: |
+          curl -fL https://getcli.jfrog.io | sh
+          sudo mv jfrog /usr/local/bin/
+          
       - name: Publish JFrog Artifact
         uses: advancedcsg-open/action-jfrog-cli@master
         with:
