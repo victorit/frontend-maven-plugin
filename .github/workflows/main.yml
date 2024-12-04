@@ -35,11 +35,11 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn clean verify sonar:sonar -Dsonar.organization=victorit -Dsonar.projectKey=victorit_my_training -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.report.export.path=report/sonarqube-report.sarif
+          mvn clean verify sonar:sonar -Dsonar.organization=victorit -Dsonar.projectKey=victorit_my_training -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.report.export.path=sonarqube-report.sarif
       - name: Upload SARIF Report
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: report/sonarqube-report.sarif
+          sarif_file: sonarqube-report.sarif
       - name: "Run Maven"
         shell: bash
         run: mvn clean install --batch-mode -PintegrationTests
