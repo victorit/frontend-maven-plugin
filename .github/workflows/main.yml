@@ -39,8 +39,16 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           mvn clean verify sonar:sonar -Dsonar.organization=victorit -Dsonar.projectKey=victorit_my_training -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.exclusions=target/**,bin/**,**/*.class -Dsonar.report.export.path=sonarqube-report.sarif
-          uses: github/codeql-action/upload-sarif@v3
+      - uses: github/codeql-action/upload-sarif@v3
           with:
             sarif_file: sonarqube-report.sarif
       - name: Package
         run: mvn -B clean package -DskipTests
+      - name: Publish JFrog Artifact
+        uses: advancedcsg-open/action-jfrog-cli@master
+        with:
+          url: 'https://trialkl8y5h.jfrog.io/ui/packages'
+          credentials type: 'username'
+          user: ${{ secrets.ARTIFACTORY_USER }}
+          password: ${{ secrets.ARTIFACTORY_PASSWORD }}
+          args: u "target/*.jar" "/exam-snapshot" --recursive=true
