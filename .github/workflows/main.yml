@@ -39,7 +39,7 @@ jobs:
       - name: Upload SARIF Report
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: path/to/sonarqube-report.sarif
+          sarif_file: report/sonarqube-report.sarif
       - name: "Run Maven"
         shell: bash
         run: mvn clean install --batch-mode -PintegrationTests
