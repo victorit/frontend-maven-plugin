@@ -29,3 +29,5 @@ jobs:
       - name: "Run Maven"
         shell: bash
         run: mvn clean install --batch-mode -PintegrationTests
+      - name: Package
+        run: mvn -B clean package -DskipTests
