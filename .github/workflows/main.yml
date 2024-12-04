@@ -22,7 +22,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven3-
       - name: Configure Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v4.5.0
         with:
           java-version: "11"
           distribution: temurin
