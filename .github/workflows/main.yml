@@ -41,10 +41,20 @@ jobs:
           mvn clean verify sonar:sonar -Dsonar.organization=victorit -Dsonar.projectKey=victorit_my_training -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.exclusions=target/**,bin/**,**/*.class -Dsonar.report.export.path=/home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/sonar/codeql-results.sarif
           ls -al .
           ls -al /home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/
-      - name: Upload SARIF results
-        uses: github/codeql-action/upload-sarif@v2
+          ls -al /home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/sonar/
+      # Download the SARIF file if it's an artifact from a previous job or step
+      - name: Download SARIF file
+        uses: actions/download-artifact@v3
         with:
-          sarif_file: /home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/sonar/codeql-results.sarif
+          name: sarif-file # The artifact name you want to download
+          path: /home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/sonar
+
+     # Upload the SARIF results to GitHub CodeQL
+      - name: Upload SARIF results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: '/home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/sonar/*.sarif'
+
       - name: Package
         run: mvn -B clean package -DskipTests
       - name: Publish JFrog Artifact
