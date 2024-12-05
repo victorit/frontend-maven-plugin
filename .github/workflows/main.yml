@@ -71,7 +71,7 @@ jobs:
       # JFrog Xray Scan
       - name: JFrog CLI
         env:
-          JFROG_URL: ${{ env.ARTIFACTORY_URL }}
+          JFROG_URL: https://trialkl8y5h.jfrog.io/artifactory
           JFROG_USER: ${{ secrets.ARTIFACTORY_USER }}
           JFROG_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         run: |
