@@ -71,11 +71,8 @@ jobs:
           JFROG_USER: ${{ secrets.ARTIFACTORY_USER }}
           JFROG_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         run: |
-          jfrog config add exam-server \
-            --url=$JFROG_URL \
-            --user=$JFROG_USER \
-            --password=$JFROG_PASSWORD \
-            --interactive=false
+          jfrog config add exam-server --url=$JFROG_URL --user=$JFROG_USER --password=$JFROG_PASSWORD --interactive=false
+          jfrog config show
           jfrog rt u "frontend-maven-plugin/target/*.jar" "exam-snapshot/" --build-name="my-build" --build-number="1"
           jfrog rt bp "my-build" "1"
           jfrog rt bs "my-build" "1" --fail
