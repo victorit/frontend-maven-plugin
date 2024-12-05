@@ -67,7 +67,7 @@ jobs:
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
         with:
-          version: 4.4.3
+          version: 4.4.2
       # JFrog Xray Scan
       - name: JFrog CLI
         env:
