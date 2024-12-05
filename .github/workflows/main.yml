@@ -21,27 +21,32 @@ jobs:
           key: "${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}"
           restore-keys: |
             ${{ runner.os }}-maven3-
+      # Configure java to version 17
       - name: Configure Java
         uses: actions/setup-java@v4.5.0
         with:
           java-version: "17"
           distribution: temurin
+          
       - name: Cache SonarQube dependencies
         uses: actions/cache@v3
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
-      - name: "Run Maven"
-        shell: bash
-        run: mvn clean install --batch-mode -PintegrationTests
+
       - name: Run SonarQube Scanner
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
         run: |
-          mvn clean verify sonar:sonar -Dsonar.organization=victorit -Dsonar.projectKey=victorit_my_training -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.exclusions=target/**,bin/**,**/*.class -Dsonar.report.export.path=/home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/sonar/codeql-results.sarif
-          ls -al .
-          ls -al /home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/
-          ls -al /home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/sonar/
+          mvn clean verify sonar:sonar -Dsonar.organization=$SONAR_ORGANIZATION -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=$SONAR_TOKEN -Dsonar.exclusions=target/**,bin/**,**/*.class
+          
+      # Build project
+      - name: "Run Maven"
+        shell: bash
+        run: mvn clean install --batch-mode -PintegrationTests
+      
       # Download the SARIF file if it's an artifact from a previous job or step
       #- name: Download SARIF file
       #  uses: actions/download-artifact@v3
@@ -54,25 +59,24 @@ jobs:
       #  uses: github/codeql-action/upload-sarif@v3
        # with:
        #   sarif_file: '/home/runner/work/frontend-maven-plugin/frontend-maven-plugin/target/sonar/*.sarif'
-
+      # Create project
       - name: Package
         run: mvn -B clean package -DskipTests
 
       # Set up JFrog CLI
-      - name: Install JFrog CLI
-        run: |
-          curl -fL https://getcli.jfrog.io | sh
-          sudo mv jfrog /usr/local/bin/
-
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        with:
+          version: 4.4.3
       # JFrog Xray Scan
       - name: JFrog CLI
         env:
-          JFROG_URL: ${{ secrets.ARTIFACTORY_URL }}
+          JFROG_URL: ${{ env.ARTIFACTORY_URL }}
           JFROG_USER: ${{ secrets.ARTIFACTORY_USER }}
           JFROG_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         run: |
-          #jfrog config add exam-server --url="https://trialkl8y5h.jfrog.io/artifactory" --user="$JFROG_USER" --password="$JFROG_PASSWORD" --interactive=false
+          #jfrog config add exam-server --url="$JFROG_URL" --user="$JFROG_USER" --password="$JFROG_PASSWORD" --interactive=false
           #jfrog config show
-          jfrog rt u "frontend-maven-plugin/target/*.jar" "exam-snapshot/" --build-name="my-build" --build-number="1" --url="https://trialkl8y5h.jfrog.io/artifactory" --user="$JFROG_USER" --password="$JFROG_PASSWORD"
-          jfrog rt bp "my-build" "1" --url="https://trialkl8y5h.jfrog.io/artifactory" --user="$JFROG_USER" --password="$JFROG_PASSWORD"
-          jfrog rt bs "my-build" "1" --url="https://trialkl8y5h.jfrog.io/artifactory" --user="$JFROG_USER" --password="$JFROG_PASSWORD" --fail
+          jfrog rt u "frontend-maven-plugin/target/*.jar" "exam-snapshot/" --build-name="my-build" --build-number="1" --url="--url="$JFROG_URL" --user="$JFROG_USER" --password="$JFROG_PASSWORD"
+          jfrog rt bp "my-build" "1" --url=--url="$JFROG_URL" --user="$JFROG_USER" --password="$JFROG_PASSWORD"
+          jfrog rt bs "my-build" "1" --url=--url="$JFROG_URL" --user="$JFROG_USER" --password="$JFROG_PASSWORD" --fail
