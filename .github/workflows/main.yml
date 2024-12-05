@@ -50,12 +50,14 @@ jobs:
         with:
           entryPoint: "/entrypoint.sh"
           args: |
-           -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
-           -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-           -Dsonar.host.url=https://sonarcloud.io
-           -Dsonar.exclusions=target/**,bin/**,**/*.class
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.java.binaries=target/classes
+            -Dsonar.exclusions=target/**,bin/**,**/*.class
         env:
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
  
       # Build project
       - name: "Run Maven"
