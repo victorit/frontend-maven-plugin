@@ -67,9 +67,9 @@ jobs:
       # JFrog Xray Scan
       - name: JFrog CLI
         env:
-          JFROG_URL: ${{ secrets.JFROG_URL }}
-          JFROG_USER: ${{ secrets.JFROG_USER }}
-          JFROG_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
+          JFROG_URL: ${{ secrets.ARTIFACTORY_URL }}
+          JFROG_USER: ${{ secrets.ARTIFACTORY_USER }}
+          JFROG_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         run: |
           jfrog config add exam-server \
             --url=$JFROG_URL \
