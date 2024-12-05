@@ -64,23 +64,12 @@ jobs:
           curl -fL https://getcli.jfrog.io | sh
           sudo mv jfrog /usr/local/bin/
 
-      # Configure JFrog CLI
+      # JFrog Xray Scan
       - name: Configure JFrog CLI
         run: |
           jfrog rt config --url="https://trialkl8y5h.jfrog.io/artifactory" \
                           --user=${{ secrets.JFROG_USERNAME }} \
                           --password=${{ secrets.JFROG_PASSWORD }}
-          
-      - name: Upload artifacts to Artifactory
-        run: |
           jfrog rt u "frontend-maven-plugin/target/*.jar" "exam-snapshot/" --build-name="my-build" --build-number="1"
-          
-      # Publish Build Info
-      - name: Publish Build Info
-        run: |
           jfrog rt bp "my-build" "1"
-
-      # Run Xray Scan
-      - name: Run Xray Scan
-        run: |
           jfrog rt bs "my-build" "1" --fail
