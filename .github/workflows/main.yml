@@ -43,6 +43,7 @@ jobs:
          SONAR_URL: https://sonarcloud.io
         run: |
           mvn clean verify sonar:sonar -Dsonar.organization=$SONAR_ORGANIZATION -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.host.url=$SONAR_URL -Dsonar.token=$SONAR_TOKEN -Dsonar.exclusions=target/**,bin/**,**/*.class
+          
       # Upload SonarQube to GitHub Insight
       - name: Upload SonarQube results to GitHub Insights
         uses: sonarsource/sonarcloud-github-action@v2
@@ -52,9 +53,10 @@ jobs:
            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
            -Dsonar.host.url=https://sonarcloud.io
-           -Dsonar.token=${{ secrets.SONAR_TOKEN }}
            -Dsonar.exclusions=target/**,bin/**,**/*.class
-    
+        env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+ 
       # Build project
       - name: "Run Maven"
         shell: bash
