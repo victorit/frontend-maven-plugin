@@ -35,16 +35,12 @@ jobs:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           
-      # Run SunarQube Scanner
-      - name: Debug Build Output
-        run: ls -R target || echo "Target directory not found"
-
       - name: Run SonarQube Scanner
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_ORGANIZATION: viktoryath
-          SONAR_PROJECT_KEY: viktoryath_frontend
-          SONAR_URL: https://sonarcloud.io
+          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+          SONAR_URL: ${{ secrets.SONAR_URL }}
         run: |
           mvn clean verify \
               org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
@@ -54,14 +50,6 @@ jobs:
              -Dsonar.token=${{ env.SONAR_TOKEN }} \
              -Dsonar.java.binaries=target/classes \
              -Dsonar.verbose=true
-      #- name: Run SonarQube Scanner
-      #  env:
-      #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      #   SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
-      #   SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
-      #   SONAR_URL: https://sonarcloud.io
-      #  run: |
-      #    mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.organization=viktoryath -Dsonar.projectKey=viktoryath_frontend -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.exclusions=target/**,bin/**,**/*.class
       
       # Upload SonarQube to GitHub Insight
       - name: Upload SonarQube results to GitHub Insights
@@ -71,18 +59,16 @@ jobs:
           args: |
             -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.host.url=$SONAR_URL
             -Dsonar.java.binaries=frontend-maven-plugin/target/classes
             -Dsonar.exclusions=target/**,bin/**,**/*.class
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
- 
       # Build project
       - name: "Run Maven"
         shell: bash
         run: mvn clean install --batch-mode -PintegrationTests
-      
       
       # Create project
       - name: Package
@@ -99,8 +85,7 @@ jobs:
           JFROG_USER: ${{ secrets.ARTIFACTORY_USER }}
           JFROG_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         run: |
-          jfrog rt u "frontend-maven-plugin/target/*.jar" "exam-snapshot/" --build-name="my-build" --build-number="1" --url="https://trialkl8y5h.jfrog.io/artifactory" --user="$JFROG_USER" --password="$JFROG_PASSWORD"
-          jfrog rt bp "my-build" "1" --url="https://trialkl8y5h.jfrog.io/artifactory" --user="$JFROG_USER" --password="$JFROG_PASSWORD"
-          jfrog build-scan "my-build" "1" --url="https://trialkl8y5h.jfrog.io/artifactory" --user="$JFROG_USER" --password="$JFROG_PASSWORD" --fail
-          jfrog scan "frontend-maven-plugin/target/*.jar"--url="https://trialkl8y5h.jfrog.io/artifactory" --user="$JFROG_USER" --password="$JFROG_PASSWORD"
+          jfrog rt u "frontend-maven-plugin/target/*.jar" "exam-snapshot/" --build-name="my-build" --build-number="1" --url="JFROG_URL" --user="$JFROG_USER" --password="$JFROG_PASSWORD"
+          jfrog rt bp "my-build" "1" --url="JFROG_URL" --user="$JFROG_USER" --password="$JFROG_PASSWORD"
+          jfrog build-scan "my-build" "1" --url="JFROG_URL" --user="$JFROG_USER" --password="$JFROG_PASSWORD" --fail
 
