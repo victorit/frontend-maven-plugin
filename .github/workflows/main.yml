@@ -103,8 +103,8 @@ jobs:
          # Configure JFrog CLI
            jfrog config add exam \
            --url=${{ env.JFROG_URL }} \
-           --user=${{ secrets.JFROG_USER }} \
-           --password=${{ secrets.JFROG_PASSWORD }} \
+           --user=${{ secrets.ARTIFACTORY_USER }} \
+           --password=${{ secrets.ARTIFACTORY_PASSWORD }} \
            --interactive=false
 
          # Upload artifact to JFrog Artifactory (adjust path as needed)
@@ -119,8 +119,8 @@ jobs:
          jfrog build-scan "my-build" "1" \
          --fail \
          --url=${{ env.JFROG_URL }} \
-         --user=${{ secrets.JFROG_USER }} \
-         --password=${{ secrets.JFROG_PASSWORD }}
+         --user=${{ secrets.ARTIFACTORY_USER }} \
+         --password=${{ secrets.ARTIFACTORY_PASSWORD }}
          
          # Run the Xray scan
          jfrog scan "frontend-maven-plugin/target/*.jar" --server-id=exam
