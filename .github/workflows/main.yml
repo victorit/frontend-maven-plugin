@@ -58,9 +58,9 @@ jobs:
             # mandatory
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
             -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
-            -Dsonar.exclusions=frontend-maven-plugin/target/**,bin/**,**/*.class
-            # Comma-separated paths to directories containing main source files.
-            #-Dsonar.sources= # optional, default is project base directory
+            -Dsonar.exclusions=target/**,bin/**,**/*.class
+            -Dsonar.sources=src
+            sonar.java.binaries=target/classes
             # Comma-separated paths to directories containing test source files.
             #-Dsonar.tests= # optional. For more info about Code Coverage, please refer to https://docs.sonarcloud.io/enriching/test-coverage/overview/
             # Adds more detail to both client and server-side analysis logs, activating DEBUG mode for the scanner, and adding client-side environment variables and system properties to the server-side log of analysis report processing.
