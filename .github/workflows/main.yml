@@ -100,8 +100,8 @@ jobs:
           # Configure JFrog CLI
           jfrog config add exam \
            --url=${{ env.JFROG_URL }} \
-           --user=${{ secrets.ARTIFACTORY_USER }} \
-           --password=${{ secrets.ARTIFACTORY_PASSWORD }} \
+           --user=vthinman@gmail.com \
+           --password=Vikath75 \
            --interactive=false
 
           # Upload artifact to JFrog Artifactory (adjust path as needed)
