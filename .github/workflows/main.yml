@@ -96,14 +96,14 @@ jobs:
       # JFrog Xray Scan
       - name: JFrog CLI
         env:
-          JFROG_URL: https://trialkl8y5h.jfrog.io/artifactory
+          JFROG_URL: ${{ secrets.ARTIFACTORY_URL }}
           JFROG_USER: ${{ secrets.ARTIFACTORY_USER }}
           JFROG_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         run: |
           #jfrog config add exam-server --url="$JFROG_URL" --user="$JFROG_USER" --password="$JFROG_PASSWORD" --interactive=false
           #jfrog config show
           jfrog config add exam 
-          --url=https://trialkl8y5h.jfrog.io/artifactory
+          --url=${{ secrets.ARTIFACTORY_URL }}
           --user=${{ secrets.ARTIFACTORY_USER }}
           --password=${{ secrets.ARTIFACTORY_PASSWORD }}
           --interactive=false
