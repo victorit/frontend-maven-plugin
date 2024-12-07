@@ -110,5 +110,5 @@ jobs:
           jfrog rt u "frontend-maven-plugin/target/*.jar" "exam-snapshot/" --build-name="my-build" --build-number="1" --url="$JFROG_URL" --user="$JFROG_USER" --password="$JFROG_PASSWORD"
           jfrog rt bp "my-build" "1" --url="$JFROG_URL" --user="$JFROG_USER" --password="$JFROG_PASSWORD"
           jfrog rt bs "my-build" "1" --url="$JFROG_URL" --user="$JFROG_USER" --password="$JFROG_PASSWORD" --fail
-          jfrog xr scan --server-id=exam
+          jfrog scan "frontend-maven-plugin/target/*.jar" --server-id=exam
           
