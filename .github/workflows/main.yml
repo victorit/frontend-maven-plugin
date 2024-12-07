@@ -43,7 +43,7 @@ jobs:
          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
          SONAR_URL: https://sonarcloud.io
         run: |
-          mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.organization=viktoryath -Dsonar.projectKey=Viktoryath_frontend-maven-plugin -Dsonar.host.url=$SONAR_URL -Dsonar.token=$SONAR_TOKEN -Dsonar.exclusions=target/**,bin/**,**/*.class
+          mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.organization=viktoryath -Dsonar.projectKey=iktoryath_frontend -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.exclusions=target/**,bin/**,**/*.class
       
       # Upload SonarQube to GitHub Insight
       - name: Upload SonarQube results to GitHub Insights
