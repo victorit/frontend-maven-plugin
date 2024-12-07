@@ -36,14 +36,32 @@ jobs:
           key: ${{ runner.os }}-sonar
           
       # Run SunarQube Scanner
+      - name: Debug Build Output
+        run: ls -R target || echo "Target directory not found"
+
       - name: Run SonarQube Scanner
         env:
-         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-         SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
-         SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
-         SONAR_URL: https://sonarcloud.io
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_ORGANIZATION: viktoryath
+          SONAR_PROJECT_KEY: viktoryath_frontend
+          SONAR_URL: https://sonarcloud.io
         run: |
-          mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.organization=viktoryath -Dsonar.projectKey=viktoryath_frontend -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.exclusions=target/**,bin/**,**/*.class
+          mvn clean verify \
+              org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+             -Dsonar.organization=${{ env.SONAR_ORGANIZATION }} \
+             -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }} \
+             -Dsonar.host.url=${{ env.SONAR_URL }} \
+             -Dsonar.token=${{ env.SONAR_TOKEN }} \
+             -Dsonar.java.binaries=target/classes \
+             -Dsonar.verbose=true
+      #- name: Run SonarQube Scanner
+      #  env:
+      #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+      #   SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+      #   SONAR_URL: https://sonarcloud.io
+      #  run: |
+      #    mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.organization=viktoryath -Dsonar.projectKey=viktoryath_frontend -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.exclusions=target/**,bin/**,**/*.class
       
       # Upload SonarQube to GitHub Insight
       - name: Upload SonarQube results to GitHub Insights
