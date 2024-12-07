@@ -97,30 +97,21 @@ jobs:
       - name: JFrog CLI
         env:
          JFROG_URL: https://trialkl8y5h.jfrog.io/artifactory
-         JFROG_USER: ${{ secrets.ARTIFACTORY_USER }}
-         JFROG_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         run: |
          # Configure JFrog CLI
-           jfrog config add exam \
-           --url=${{ env.JFROG_URL }} \
-           --user=${{ secrets.ARTIFACTORY_USER }} \
-           --password=${{ secrets.ARTIFACTORY_PASSWORD }} \
+           jfrog config add exam --url=${{ env.JFROG_URL }}
+           --user=${{ secrets.ARTIFACTORY_USER }}
+           --password=${{ secrets.ARTIFACTORY_PASSWORD }}
            --interactive=false
 
          # Upload artifact to JFrog Artifactory (adjust path as needed)
-         jfrog rt u "frontend-maven-plugin/target/*.jar" "exam-snapshot/" \
-         --build-name="my-build" \
-         --build-number="1"
+         jfrog rt u "frontend-maven-plugin/target/*.jar" "exam-snapshot/" --build-name="my-build" --build-number="1"
 
          # Publish build information to Artifactory
          jfrog rt bp "my-build" "1"
 
          # Trigger the build scan
-         jfrog build-scan "my-build" "1" \
-         --fail \
-         --url=${{ env.JFROG_URL }} \
-         --user=${{ secrets.ARTIFACTORY_USER }} \
-         --password=${{ secrets.ARTIFACTORY_PASSWORD }}
+         jfrog build-scan "my-build" "1" --fail
          
          # Run the Xray scan
          jfrog scan "frontend-maven-plugin/target/*.jar" --server-id=exam
