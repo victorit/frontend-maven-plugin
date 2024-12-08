@@ -50,17 +50,15 @@ jobs:
              -Dsonar.token=${{ env.SONAR_TOKEN }} \
              -Dsonar.java.binaries=target/classes \
              -Dsonar.verbose=true
-          pwd
-          ls -a
           ls -R target/sonar || echo "No sonar directory found."
           cat target/sonar/report-task.txt || echo "No report-task.txt file found."
-          #SONAR_TASK_ID=$(grep '^ceTaskId=' .scannerwork/report-task.txt | cut -d'=' -f2)
-          #echo "Sonar Task ID: $SONAR_TASK_ID"
+          SONAR_TASK_ID=$(grep '^ceTaskId=' .scannerwork/report-task.txt | cut -d'=' -f2)
+          echo "Sonar Task ID: $SONAR_TASK_ID"
           # Poll the SonarQube API for Quality Gate status
-          #STATUS_URL="${{ env.SONAR_URL }}/api/qualitygates/project_status?analysisId=$SONAR_TASK_ID"
-          #echo "Polling Quality Gate API at: $STATUS_URL"
-          #STATUS=$(curl -s -u ${{ secrets.SONAR_TOKEN }}: "$STATUS_URL" | jq -r '.projectStatus.status')
-          #echo "Quality Gate Status: $STATUS"
+          STATUS_URL="${{ env.SONAR_URL }}/api/qualitygates/project_status?analysisId=$SONAR_TASK_ID"
+          echo "Polling Quality Gate API at: $STATUS_URL"
+          STATUS=$(curl -s -u ${{ secrets.SONAR_TOKEN }}: "$STATUS_URL" | jq -r '.projectStatus.status')
+          echo "Quality Gate Status: $STATUS"
 
           # Fail the build if the Quality Gate status is not "OK"
           #if [ "$STATUS" != "OK" ]; then
