@@ -51,7 +51,6 @@ jobs:
              -Dsonar.java.binaries=target/classes \
              -Dsonar.qualitygate.wait=true \
              -Dsonar.verbose=true
-          - name: Debug Scanner Output
           pwd
           ls -R .scannerwork || echo "No .scannerwork directory found."
           cat .scannerwork/report-task.txt || echo "No report-task.txt file found."
