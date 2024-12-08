@@ -58,10 +58,10 @@ jobs:
           echo "Quality Gate Status: $STATUS"
 
           # Fail the build if the Quality Gate status is not "OK"
-          #if [ "$STATUS" != "OK" ]; then
-          #  echo "Quality Gate failed. Blocking the pipeline."
-          #  exit 1
-          #fi
+          if [ "$STATUS" != "OK" ]; then
+            echo "Quality Gate failed. Blocking the pipeline."
+            exit 1
+          fi
       
       # Upload SonarQube to GitHub Insight
       - name: Upload SonarQube results to GitHub Insights
