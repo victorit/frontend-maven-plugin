@@ -38,15 +38,12 @@ jobs:
       - name: Run SonarQube Scanner
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
-          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
-          SONAR_URL: ${{ secrets.SONAR_URL }}
         run: |
           mvn clean verify \
               org.sonarsource.scanner.maven:sonar-maven-plugin:5.0.0.4389:sonar \
-             -Dsonar.organization=${{ env.SONAR_ORGANIZATION }} \
-             -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }} \
-             -Dsonar.host.url=${{ env.SONAR_URL }} \
+             -Dsonar.organization=viktoryath \
+             -Dsonar.projectKey=viktoryath_frontend \
+             -Dsonar.host.url=https://sonarcloud.io \
              -Dsonar.token=${{ env.SONAR_TOKEN }} \
              -Dsonar.java.binaries=target/classes \
              -Dsonar.verbose=true
@@ -72,9 +69,9 @@ jobs:
         with:
           entryPoint: "/entrypoint.sh"
           args: |
-            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-            -Dsonar.host.url=${{ secrets.SONAR_URL }}
+            -Dsonar.organization=viktoryath
+            -Dsonar.projectKey=viktoryath_frontend
+            -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.java.binaries=frontend-maven-plugin/target/classes
             -Dsonar.exclusions=target/**,bin/**,**/*.class
         env:
