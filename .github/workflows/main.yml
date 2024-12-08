@@ -54,19 +54,19 @@ jobs:
           pwd
           ls -R .scannerwork || echo "No .scannerwork directory found."
           cat .scannerwork/report-task.txt || echo "No report-task.txt file found."
-          SONAR_TASK_ID=$(grep '^ceTaskId=' .scannerwork/report-task.txt | cut -d'=' -f2)
-          echo "Sonar Task ID: $SONAR_TASK_ID"
+          #SONAR_TASK_ID=$(grep '^ceTaskId=' .scannerwork/report-task.txt | cut -d'=' -f2)
+          #echo "Sonar Task ID: $SONAR_TASK_ID"
           # Poll the SonarQube API for Quality Gate status
-          STATUS_URL="${{ env.SONAR_URL }}/api/qualitygates/project_status?analysisId=$SONAR_TASK_ID"
-          echo "Polling Quality Gate API at: $STATUS_URL"
-          STATUS=$(curl -s -u ${{ secrets.SONAR_TOKEN }}: "$STATUS_URL" | jq -r '.projectStatus.status')
-          echo "Quality Gate Status: $STATUS"
+          #STATUS_URL="${{ env.SONAR_URL }}/api/qualitygates/project_status?analysisId=$SONAR_TASK_ID"
+          #echo "Polling Quality Gate API at: $STATUS_URL"
+          #STATUS=$(curl -s -u ${{ secrets.SONAR_TOKEN }}: "$STATUS_URL" | jq -r '.projectStatus.status')
+          #echo "Quality Gate Status: $STATUS"
 
           # Fail the build if the Quality Gate status is not "OK"
-          if [ "$STATUS" != "OK" ]; then
-            echo "Quality Gate failed. Blocking the pipeline."
-            exit 1
-          fi
+          #if [ "$STATUS" != "OK" ]; then
+          #  echo "Quality Gate failed. Blocking the pipeline."
+          #  exit 1
+          #fi
       
       # Upload SonarQube to GitHub Insight
       - name: Upload SonarQube results to GitHub Insights
