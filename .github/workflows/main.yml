@@ -49,7 +49,6 @@ jobs:
              -Dsonar.host.url=${{ env.SONAR_URL }} \
              -Dsonar.token=${{ env.SONAR_TOKEN }} \
              -Dsonar.java.binaries=target/classes \
-             -Dsonar.qualitygate.wait=true \
              -Dsonar.verbose=true
           pwd
           ls -R .scannerwork || echo "No .scannerwork directory found."
