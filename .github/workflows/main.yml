@@ -43,14 +43,14 @@ jobs:
           SONAR_URL: ${{ secrets.SONAR_URL }}
         run: |
           mvn clean verify \
-              org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+              org.sonarsource.scanner.maven:sonar-maven-plugin:5.0.0.4389 \
              -Dsonar.organization=${{ env.SONAR_ORGANIZATION }} \
              -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }} \
              -Dsonar.host.url=${{ env.SONAR_URL }} \
              -Dsonar.token=${{ env.SONAR_TOKEN }} \
              -Dsonar.java.binaries=target/classes \
              -Dsonar.verbose=true
-          ls -R target/sonar || echo "No sonar directory found."
+          #ls -R target/sonar || echo "No sonar directory found."
           cat target/sonar/report-task.txt || echo "No report-task.txt file found."
           SONAR_TASK_ID=$(grep '^ceTaskId=' .scannerwork/report-task.txt | cut -d'=' -f2)
           echo "Sonar Task ID: $SONAR_TASK_ID"
