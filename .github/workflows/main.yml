@@ -43,7 +43,7 @@ jobs:
           SONAR_URL: ${{ secrets.SONAR_URL }}
         run: |
           mvn clean verify \
-              org.sonarsource.scanner.maven:sonar-maven-plugin:5.0.0.4389 \
+              org.sonarsource.scanner.maven:sonar-maven-plugin:5.0.0.4389:sonar \
              -Dsonar.organization=${{ env.SONAR_ORGANIZATION }} \
              -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }} \
              -Dsonar.host.url=${{ env.SONAR_URL }} \
