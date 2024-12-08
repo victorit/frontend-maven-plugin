@@ -49,7 +49,12 @@ jobs:
              -Dsonar.host.url=${{ env.SONAR_URL }} \
              -Dsonar.token=${{ env.SONAR_TOKEN }} \
              -Dsonar.java.binaries=target/classes \
+             -Dsonar.qualitygate.wait=true \
              -Dsonar.verbose=true
+          - name: Debug Scanner Output
+          pwd
+          ls -R .scannerwork || echo "No .scannerwork directory found."
+          cat .scannerwork/report-task.txt || echo "No report-task.txt file found."
           SONAR_TASK_ID=$(grep '^ceTaskId=' .scannerwork/report-task.txt | cut -d'=' -f2)
           echo "Sonar Task ID: $SONAR_TASK_ID"
           # Poll the SonarQube API for Quality Gate status
