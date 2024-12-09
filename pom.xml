@@ -61,6 +61,16 @@
         </repository>
     </distributionManagement>
 
+    <dependencies>
+    <!-- Xray Dependency -->
+    <dependency>
+        <groupId>com.xpandit</groupId>
+        <artifactId>xray-junit</artifactId>
+        <version>3.0.0</version> <!-- You can adjust the version based on the one you need -->
+    </dependency>
+    </dependencies>
+
+
     <build>
         <plugins>
             <plugin>
