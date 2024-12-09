@@ -37,6 +37,12 @@
       <tag>frontend-plugins-1.14.2</tag>
     </scm>
 
+    <dependency>
+        <groupId>com.jfrog</groupId>
+        <artifactId>xray-client-java</artifactId>
+        <version>0.14.1</version>
+    </dependency>
+
     <developers>
         <developer>
             <id>victorit</id>
